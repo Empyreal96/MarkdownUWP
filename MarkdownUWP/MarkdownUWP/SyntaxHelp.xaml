@@ -1,0 +1,119 @@
+﻿<Page
+    x:Class="MarkdownUWP.SyntaxHelp"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MarkdownUWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+      NavigationCacheMode="Required"
+    Background="#FF333337">
+
+    <Grid Background="#FF333337">
+        <RelativePanel>
+            
+            <TextBlock x:Name="SyntaxHelpHeader" Text="Markdown Syntax Help" RelativePanel.AlignHorizontalCenterWithPanel="True" FontSize="18" Margin="0,16,0,0"/>
+            <TextBlock x:Name="SyntaxInfo" Margin="5,5,5,5" Text="Below is some basic usage for Markdown syntax. A comprehensive list can be found: https://github.com/darsaveli/Readme-Markdown-Syntax" TextWrapping="Wrap" RelativePanel.Below="SyntaxHelpHeader" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
+            <ScrollViewer x:Name="SyntaxScroller"  RelativePanel.Below="SyntaxInfo" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <Grid x:Name="SyntaxGrid" Margin="5,5,5,5" ScrollViewer.VerticalScrollMode="Enabled" RelativePanel.Below="SyntaxInfo" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"  BorderBrush="#FF686868" Background="#FF2D2D30" FocusVisualSecondaryBrush="#FF686868">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                
+                <Border Background="#FF3E3E42"  Grid.Row="0" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                <TextBlock x:Name="HeadersInfo" Grid.Row="0" TextWrapping="Wrap" Grid.Column="0" Text="Headers" Margin="4,0,2,0"/>
+                </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="0" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="HeadersSyntax" Grid.Column="1" TextWrapping="Wrap" Grid.Row="0" Text="Syntax" Margin="4,0,2,0"/>
+                </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="1" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ItalicsInfo" Grid.Row="1" TextWrapping="Wrap" Grid.Column="0" Text="Italics" Margin="4,0,2,0"/>
+                </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="1" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ItalicsSyntax" Grid.Column="1" TextWrapping="Wrap" Grid.Row="1" Text="Syntax" Margin="4,0,2,0"/>
+                </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="2" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="BoldInfo" Grid.Row="2" TextWrapping="Wrap" Grid.Column="0" Text="Bold" Margin="4,0,2,0"/>
+                </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="2" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="BoldSyntax" Grid.Column="1" TextWrapping="Wrap" Grid.Row="2" Text="Syntax" Margin="4,0,2,0"/>
+                </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="3" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="StrikeInfo" Grid.Row="3" TextWrapping="Wrap" Grid.Column="0" Text="Strikethrough" Margin="4,0,2,0"/>
+                </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="3" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="StrikeSyntax" Grid.Column="1" TextWrapping="Wrap" Grid.Row="3" Text="Syntax" Margin="4,0,2,0"/>
+                </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="4" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ListsInfo" Grid.Row="4" TextWrapping="Wrap" Grid.Column="0" Text="Lists" Margin="4,0,2,0"/>
+                </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="4" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ListsSyntax" Grid.Row="4" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="5" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="LinksInfo" Grid.Row="5" TextWrapping="Wrap" Grid.Column="0" Text="Links" Margin="4,0,2,0"/>
+                </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="5" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="LinksSyntax" Grid.Row="5" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="6" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ImageLinksInfo" Grid.Row="6" TextWrapping="Wrap" Grid.Column="0" Text="Image Links" Margin="4,0,2,0"/>
+                </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="6" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ImageLinksSyntax" Grid.Row="6" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="7" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ImageResizingInfo" Grid.Row="7" TextWrapping="Wrap" Grid.Column="0" Text="Image Sizes" Margin="4,0,2,0"/>
+                </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="7" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ImageResizingSyntax" Grid.Row="7" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="8" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="TablesInfo" Grid.Row="8" TextWrapping="Wrap" Grid.Column="0" Text="Tables" Margin="4,0,2,0"/>
+                </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="8" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="TablesSyntax" Grid.Row="8" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="9" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="HighlightInfo" Grid.Row="9" TextWrapping="Wrap" Grid.Column="0" Text="Highlight" Margin="4,0,2,0"/>
+                </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="9" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="HighlightSyntax" Grid.Row="9" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="10" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="CodeInfo" Grid.Row="10" TextWrapping="Wrap" Grid.Column="0" Text="Code" Margin="4,0,2,0"/>
+                </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="10" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="CodeSyntax" Grid.Row="10" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                </Border>
+            </Grid>
+            </ScrollViewer>
+        </RelativePanel>
+    </Grid>
+</Page>

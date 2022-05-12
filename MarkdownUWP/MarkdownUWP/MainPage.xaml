@@ -1,0 +1,102 @@
+﻿<Page
+    x:Class="MarkdownUWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:local="using:MarkdownUWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+
+    Loaded="Page_Loaded"
+    NavigationCacheMode="Required"
+    
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <SolidColorBrush 
+            x:Key="NavigationViewExpandedPaneBackground" />
+
+    </Page.Resources>
+    <Grid>
+        <RelativePanel FocusVisualPrimaryBrush="#FF333337" Background="#FF333337">
+            <Border x:Name="MarkBorder" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Background="#FF333337">
+                <TextBox 
+                AcceptsReturn="True" 
+                RelativePanel.AlignLeftWithPanel="True" 
+                RelativePanel.AlignRightWithPanel="True" 
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignBottomWithPanel="True"
+                GotFocus="MarkEditor_GotFocus"
+                x:Name="MarkEditor"
+                Margin="0,45,0,0"
+                Text=""
+                RequestedTheme="Dark"/>
+            </Border>
+            <TextBlock x:Name="FileHeader" RelativePanel.AlignTopWithPanel="True" HorizontalAlignment="Left" Margin="50,9,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18"/>
+            <ProgressBar x:Name="Progress" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Above="MarkBorder" Margin="0,42,0,0" Foreground="{ThemeResource SystemAccentColor}"/>
+        </RelativePanel>
+
+        <Frame x:Name="ContentFrame" />
+
+        <controls:NavigationView 
+                                 IsPaneOpen="False"
+                                 ItemInvoked="MainNav_ItemInvoked"
+                                 x:Name="MainNav"
+                                 IsBackEnabled="False"
+                                 IsBackButtonVisible="Collapsed"
+                                 IsSettingsVisible="False"
+            Width="auto" MaxWidth="200" HorizontalAlignment="Left">
+            <controls:NavigationView.MenuItems>
+                <controls:NavigationViewItem Content="MarkdownUWP" IsTapEnabled="False" IsHitTestVisible="False"/>
+                <controls:NavigationViewItem Content="   Editor" Icon="Edit" Tag="MainPage"/>
+
+                <controls:NavigationViewItem x:Name="OpenButtonNav">
+                    <controls:NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="OpenFile"/>
+                    </controls:NavigationViewItem.Icon>
+                    <Button x:Name="Openbtn"   Click="Openbtn_Click" Width="80" HorizontalAlignment="Stretch" Content="Open" HorizontalContentAlignment="Left" Background="{x:Null}" FocusVisualPrimaryBrush="{x:Null}" Margin="2,0,0,0"/>
+
+                </controls:NavigationViewItem>
+
+                <controls:NavigationViewItem x:Name="SaveButtonNew">
+                    <controls:NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Save"/>
+                    </controls:NavigationViewItem.Icon>
+                    <Button x:Name="SaveBtn" Click="SaveBtn_Click"  Width="80" HorizontalAlignment="Stretch" Content="Save" HorizontalContentAlignment="Left" Background="{x:Null}" FocusVisualPrimaryBrush="{x:Null}" Margin="2,0,0,0"/>
+
+                </controls:NavigationViewItem>
+
+                <controls:NavigationViewItem 
+                    Content="   Preview"
+                    Tag="PreviewView">
+                    <controls:NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="View"/>
+                    </controls:NavigationViewItem.Icon>
+                </controls:NavigationViewItem>
+
+                <controls:NavigationViewItem 
+                    Content="   Help"
+                    Tag="SyntaxHelp">
+                    <controls:NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Help"/>
+                    </controls:NavigationViewItem.Icon>
+                </controls:NavigationViewItem>
+
+                <controls:NavigationViewItem 
+                    Content="   About"
+                    Tag="About">
+                    <controls:NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="People"/>
+                    </controls:NavigationViewItem.Icon>
+                </controls:NavigationViewItem>
+                
+            </controls:NavigationView.MenuItems>
+
+
+        </controls:NavigationView>
+
+    </Grid>
+
+
+</Page>
