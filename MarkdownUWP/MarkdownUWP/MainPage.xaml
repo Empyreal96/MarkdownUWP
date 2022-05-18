@@ -4,8 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
      xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:local="using:MarkdownUWP"
+    xmlns:local1="using:ResponsiveButtonPanel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d"
 
     Loaded="Page_Loaded"
@@ -20,24 +21,63 @@
     </Page.Resources>
     <Grid>
         <RelativePanel FocusVisualPrimaryBrush="#FF333337" Background="#FF333337">
-            <Border x:Name="MarkBorder" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Background="#FF333337">
+           
+
+            <Border x:Name="MarkBorder" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="Progress" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Background="#FF333337" Margin="0,0,0,0">
                 <TextBox 
                 AcceptsReturn="True" 
                 RelativePanel.AlignLeftWithPanel="True" 
                 RelativePanel.AlignRightWithPanel="True" 
                 RelativePanel.AlignTopWithPanel="True"
                 RelativePanel.AlignBottomWithPanel="True"
+                    TextChanged="MarkEditor_TextChanged"
+                    SelectionChanged="MarkEditor_SelectionChanged"
+                    IsRightTapEnabled="True"
                 GotFocus="MarkEditor_GotFocus"
                 x:Name="MarkEditor"
-                Margin="0,45,0,0"
                 Text=""
-                RequestedTheme="Dark"/>
+                    IsTextPredictionEnabled="False"
+                    IsSpellCheckEnabled="False"
+                    
+                RequestedTheme="Light"  Background="White" FocusVisualSecondaryBrush="white" SelectionHighlightColorWhenNotFocused="White" BorderBrush="{x:Null}" Margin="0,9,0,0" />
             </Border>
             <TextBlock x:Name="FileHeader" RelativePanel.AlignTopWithPanel="True" HorizontalAlignment="Left" Margin="50,9,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18"/>
-            <ProgressBar x:Name="Progress" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Above="MarkBorder" Margin="0,42,0,0" Foreground="{ThemeResource SystemAccentColor}"/>
+            <TextBox x:Name="CursorLocationBox" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="0,6,5,0" Background="{x:Null}" BorderBrush="{x:Null}" IsHitTestVisible="False" FocusVisualPrimaryBrush="{x:Null}"/>
+            <local1:ResponsiveButtonPanel x:Name="ToolbarDockMD" MoreButtonStyle="{StaticResource ResponsiveButtonPanelMoreButtonStyle}" RelativePanel.AlignLeftWithPanel="True" MaxHeight="100" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="FileHeader" Margin="0,10,0,0" Background="#FF1F1F1F">
+                <local1:ResponsiveButtonPanel.Elements>
+                    <local1:ResponsiveButtonPanelButton Tag="CutTag" Text="Cut" Glyph="&#xE8C6;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="CopyTag" Text="Copy" Glyph="&#xE8C8;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="PasteTag" Text="Paste" Glyph="&#xE77F;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="UndoTag" Text="Undo" Glyph="&#xE7A7;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="RedoTag" Text="Redo" Glyph="&#xE7A6;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="BoldTag" Text="Bold" Glyph="&#xE8DD;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="ItalicTag" Text="Italic" Glyph="&#xE8DB;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="StrikeTag" Text="Strike" Glyph="&#xEDE0;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="Header1Tag" Text="Header 1" Glyph="&#xE8E8;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="ToolHelpTag" Text="Tools Help" Glyph="&#xE897;" Click="ResponsiveButtonPanelButton_Click" />
+
+
+                </local1:ResponsiveButtonPanel.Elements>
+            </local1:ResponsiveButtonPanel>
+
+            <local1:ResponsiveButtonPanel x:Name="ToolbarDock" IsEnabled="False" Visibility="Collapsed" MoreButtonStyle="{StaticResource ResponsiveButtonPanelMoreButtonStyle}" RelativePanel.AlignLeftWithPanel="True" MaxHeight="100" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="FileHeader" Margin="0,10,0,0">
+                <local1:ResponsiveButtonPanel.Elements>
+                    <local1:ResponsiveButtonPanelButton Tag="CutTag1" Text="Cut" Glyph="&#xE8C6;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="CopyTag1" Text="Copy" Glyph="&#xE8C8;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="PasteTag1" Text="Paste" Glyph="&#xE77F;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="UndoTag1" Text="Undo" Glyph="&#xE7A7;" Click="ResponsiveButtonPanelButton_Click" />
+                    <local1:ResponsiveButtonPanelButton Tag="RedoTag1" Text="Redo" Glyph="&#xE7A6;" Click="ResponsiveButtonPanelButton_Click" />
+
+                    <local1:ResponsiveButtonPanelButton Tag="ToolHelpTag1" Text="Tools Help" Glyph="&#xE897;" Click="ResponsiveButtonPanelButton_Click" />
+
+
+                </local1:ResponsiveButtonPanel.Elements>
+            </local1:ResponsiveButtonPanel>
+            
+            <ProgressBar x:Name="Progress" RelativePanel.AlignLeftWithPanel="True" Visibility="Visible" IsEnabled="False" RelativePanel.AlignRightWithPanel="True"  Margin="0,86,0,0" Foreground="{ThemeResource SystemAccentColor}" Background="#FF1F1F1F" BorderBrush="#FF1F1F1F" FocusVisualPrimaryBrush="#FF1F1F1F" FocusVisualSecondaryBrush="#FF1F1F1F"/>
         </RelativePanel>
 
-        <Frame x:Name="ContentFrame" />
+        
 
         <controls:NavigationView 
                                  IsPaneOpen="False"
@@ -48,27 +88,19 @@
                                  IsSettingsVisible="False"
             Width="auto" MaxWidth="200" HorizontalAlignment="Left">
             <controls:NavigationView.MenuItems>
+
                 <controls:NavigationViewItem Content="MarkdownUWP" IsTapEnabled="False" IsHitTestVisible="False"/>
-                <controls:NavigationViewItem Content="   Editor" Icon="Edit" Tag="MainPage"/>
+                <!-- controls:NavigationViewItem Content="Editor" Icon="Edit" Tag="MainPage"/ -->
 
-                <controls:NavigationViewItem x:Name="OpenButtonNav">
-                    <controls:NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="OpenFile"/>
-                    </controls:NavigationViewItem.Icon>
-                    <Button x:Name="Openbtn"   Click="Openbtn_Click" Width="80" HorizontalAlignment="Stretch" Content="Open" HorizontalContentAlignment="Left" Background="{x:Null}" FocusVisualPrimaryBrush="{x:Null}" Margin="2,0,0,0"/>
 
-                </controls:NavigationViewItem>
+                <controls:NavigationViewItem x:Name="OpenFileBtn" Content="Open" Icon="OpenFile" Tag="OpenFileTag"/>
+                <controls:NavigationViewItem x:Name="SaveFileBtn" Content="Save" Icon="Save" Tag="SaveFileTag"/>
+                <controls:NavigationViewItem x:Name="SaveAsFileBtn" Content="Save As.." Icon="Save" Tag="SaveAsFileTag"/>
 
-                <controls:NavigationViewItem x:Name="SaveButtonNew">
-                    <controls:NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Save"/>
-                    </controls:NavigationViewItem.Icon>
-                    <Button x:Name="SaveBtn" Click="SaveBtn_Click"  Width="80" HorizontalAlignment="Stretch" Content="Save" HorizontalContentAlignment="Left" Background="{x:Null}" FocusVisualPrimaryBrush="{x:Null}" Margin="2,0,0,0"/>
 
-                </controls:NavigationViewItem>
 
                 <controls:NavigationViewItem 
-                    Content="   Preview"
+                    Content="Preview"
                     Tag="PreviewView">
                     <controls:NavigationViewItem.Icon>
                         <SymbolIcon Symbol="View"/>
@@ -76,7 +108,7 @@
                 </controls:NavigationViewItem>
 
                 <controls:NavigationViewItem 
-                    Content="   Help"
+                    Content="Syntax"
                     Tag="SyntaxHelp">
                     <controls:NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Help"/>
@@ -84,18 +116,217 @@
                 </controls:NavigationViewItem>
 
                 <controls:NavigationViewItem 
-                    Content="   About"
+                    Content="About"
                     Tag="About">
                     <controls:NavigationViewItem.Icon>
                         <SymbolIcon Symbol="People"/>
                     </controls:NavigationViewItem.Icon>
                 </controls:NavigationViewItem>
-                
+
             </controls:NavigationView.MenuItems>
 
 
         </controls:NavigationView>
 
+        <!-- Markdown Preview  -->
+        <RelativePanel x:Name="PreviewPane" Margin="20,20,20,20" Background="#FF1E1E1E">
+            <Border x:Name="WebviewBorder" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True" BorderBrush="Black" BorderThickness="1,1,1,1">
+                <WebView x:Name="PreviewWebview" 
+                 RelativePanel.AlignBottomWithPanel="True"
+                 RelativePanel.AlignLeftWithPanel="True"
+                 RelativePanel.AlignRightWithPanel="True"
+                 RelativePanel.AlignTopWithPanel="True" FocusVisualSecondaryBrush="#FF333337" FocusVisualPrimaryBrush="White"
+                 DefaultBackgroundColor="#FF1E1E1E"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch"
+                 Margin="0,0,0,0"
+                 />
+            </Border>
+            <Button x:Name="PreviewClose" RelativePanel.AlignRightWithPanel="True" Click="PreviewClose_Click">
+                <SymbolIcon Symbol="Cancel"/>
+            </Button>
+        </RelativePanel>
+
+
+<!-- About -->
+        <RelativePanel x:Name="AboutPane" Margin="20,20,20,20" BorderBrush="Black" BorderThickness="1,1,1,1" Background="#FF1E1E1E">
+            <TextBlock x:Name="AboutHeader" Text="Minidump Editor UWP" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="0,16,0,0" FontSize="18"/>
+            <TextBlock x:Name="AboutText" RelativePanel.Below="AboutHeader" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="5,5,5,5" TextWrapping="Wrap" FontSize="16"/>
+            <Grid x:Name="DlGrid"
+                  RelativePanel.AlignBottomWithPanel="True"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.AlignRightWithPanel="True"
+                  Margin="5,5,5,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition 
+                        Height="*"></RowDefinition>
+                    <RowDefinition 
+                        Height="*"></RowDefinition>
+                    <RowDefinition 
+                        Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+
+                <TextBlock 
+                x:Name="UpdateOut"
+                Grid.Row="0"
+                RelativePanel.Above="DLUpdate"
+                MinWidth="200" 
+                Height="auto" 
+                TextWrapping="Wrap"
+                ScrollViewer.VerticalScrollMode="Enabled" 
+                Margin="5,5,5,5" 
+                HorizontalAlignment="Stretch" 
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"/>
+                <ProgressBar 
+                        x:Name="ProgressBarDownload" 
+                Grid.Row="1"
+                        RelativePanel.Below="UpdateOut" 
+                RelativePanel.Above="DLUpdate"
+                        RelativePanel.AlignLeftWithPanel="True"
+                        RelativePanel.AlignRightWithPanel="True"
+                        HorizontalAlignment="Stretch" 
+                        Height="10"
+                        Margin="5,5,5,5"
+                        VerticalAlignment="Top"/>
+                <Button
+                x:Name="DLUpdate"
+                Grid.Row="2"
+                Click="DLUpdate_Click"
+                HorizontalAlignment="Stretch" 
+                RelativePanel.AlignBottomWithPanel="True"
+                Content="Download Update" 
+                Margin="5,5,5,5"/>
+
+                <Button
+                x:Name="InstallUpdateBtn"
+                Grid.Row="2"
+                Click="InstallUpdateBtn_Click"
+                HorizontalAlignment="Stretch" 
+                RelativePanel.AlignBottomWithPanel="True"
+                Content="Install Update" 
+                Margin="5,5,5,5"/>
+            </Grid>
+            <Button x:Name="AboutClose" RelativePanel.AlignRightWithPanel="True" Click="AboutClose_Click">
+                <SymbolIcon Symbol="Cancel"/>
+            </Button>
+        </RelativePanel>
+
+        <!-- Syntax -->
+        <RelativePanel x:Name="SyntaxPane" Margin="20,20,20,20" BorderBrush="Black" BorderThickness="1,1,1,1" Background="#FF1E1E1E">
+
+            <TextBlock x:Name="SyntaxHelpHeader" Text="Markdown Syntax Help" RelativePanel.AlignHorizontalCenterWithPanel="True" FontSize="18" Margin="0,16,0,0"/>
+            <TextBlock x:Name="SyntaxInfo" Margin="5,5,5,5" Text="Below is some basic usage for Markdown syntax. A comprehensive list can be found: " TextWrapping="Wrap" RelativePanel.Below="SyntaxHelpHeader" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
+            <HyperlinkButton x:Name="SyntaxLink" NavigateUri="https://github.com/darsaveli/Readme-Markdown-Syntax" Content="https://github.com/darsaveli/Readme-Markdown-Syntax" RelativePanel.Below="SyntaxInfo" Margin="5,5,5,5"/>
+            <ScrollViewer x:Name="SyntaxScroller"  RelativePanel.Below="SyntaxLink" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                <Grid x:Name="SyntaxGrid" Margin="5,5,5,5" ScrollViewer.VerticalScrollMode="Enabled" RelativePanel.Below="SyntaxInfo" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"  BorderBrush="#FF686868" Background="#FF2D2D30" FocusVisualSecondaryBrush="#FF686868">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+
+                    <Border Background="#FF3E3E42"  Grid.Row="0" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="HeadersInfo" Grid.Row="0" TextWrapping="Wrap" Grid.Column="0" Text="Headers" Margin="4,0,2,0"/>
+                    </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="0" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="HeadersSyntax" Grid.Column="1" TextWrapping="Wrap" Grid.Row="0" Text="Syntax" Margin="4,0,2,0"/>
+                    </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="1" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ItalicsInfo" Grid.Row="1" TextWrapping="Wrap" Grid.Column="0" Text="Italics" Margin="4,0,2,0"/>
+                    </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="1" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ItalicsSyntax" Grid.Column="1" TextWrapping="Wrap" Grid.Row="1" Text="Syntax" Margin="4,0,2,0"/>
+                    </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="2" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="BoldInfo" Grid.Row="2" TextWrapping="Wrap" Grid.Column="0" Text="Bold" Margin="4,0,2,0"/>
+                    </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="2" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="BoldSyntax" Grid.Column="1" TextWrapping="Wrap" Grid.Row="2" Text="Syntax" Margin="4,0,2,0"/>
+                    </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="3" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="StrikeInfo" Grid.Row="3" TextWrapping="Wrap" Grid.Column="0" Text="Strikethrough" Margin="4,0,2,0"/>
+                    </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="3" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="StrikeSyntax" Grid.Column="1" TextWrapping="Wrap" Grid.Row="3" Text="Syntax" Margin="4,0,2,0"/>
+                    </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="4" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ListsInfo" Grid.Row="4" TextWrapping="Wrap" Grid.Column="0" Text="Lists" Margin="4,0,2,0"/>
+                    </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="4" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ListsSyntax" Grid.Row="4" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                    </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="5" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="LinksInfo" Grid.Row="5" TextWrapping="Wrap" Grid.Column="0" Text="Links" Margin="4,0,2,0"/>
+                    </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="5" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="LinksSyntax" Grid.Row="5" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                    </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="6" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ImageLinksInfo" Grid.Row="6" TextWrapping="Wrap" Grid.Column="0" Text="Image Links" Margin="4,0,2,0"/>
+                    </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="6" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ImageLinksSyntax" Grid.Row="6" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                    </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="7" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ImageResizingInfo" Grid.Row="7" TextWrapping="Wrap" Grid.Column="0" Text="Image Sizes" Margin="4,0,2,0"/>
+                    </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="7" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="ImageResizingSyntax" Grid.Row="7" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                    </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="8" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="TablesInfo" Grid.Row="8" TextWrapping="Wrap" Grid.Column="0" Text="Tables" Margin="4,0,2,0"/>
+                    </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="8" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="TablesSyntax" Grid.Row="8" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                    </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="9" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="HighlightInfo" Grid.Row="9" TextWrapping="Wrap" Grid.Column="0" Text="Highlight" Margin="4,0,2,0"/>
+                    </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="9" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="HighlightSyntax" Grid.Row="9" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                    </Border>
+
+                    <Border Background="#FF3E3E42" Grid.Row="10" Grid.Column="0" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="CodeInfo" Grid.Row="10" TextWrapping="Wrap" Grid.Column="0" Text="Code" Margin="4,0,2,0"/>
+                    </Border>
+                    <Border Background="#FF3E3E42" Grid.Row="10" Grid.Column="1" BorderBrush="#FF1E1E1E" BorderThickness="1,1,1,1">
+                        <TextBlock x:Name="CodeSyntax" Grid.Row="10" TextWrapping="Wrap" Grid.Column="1" Text="Syntax" Margin="4,0,2,0"/>
+                    </Border>
+                </Grid>
+            </ScrollViewer>
+            <Button x:Name="SyntaxClose" RelativePanel.AlignRightWithPanel="True" Click="SyntaxClose_Click">
+                <SymbolIcon Symbol="Cancel"/>
+            </Button>
+        </RelativePanel>
+
+
+
+       
     </Grid>
 
 

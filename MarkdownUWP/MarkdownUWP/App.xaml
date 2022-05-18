@@ -5,9 +5,15 @@
     xmlns:local="using:MarkdownUWP">
     
         <Application.Resources>
-            
-       
-        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+                
+  
         
     </Application.Resources>
 
