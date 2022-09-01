@@ -17,33 +17,16 @@
     <Page.Resources>
         <SolidColorBrush 
             x:Key="NavigationViewExpandedPaneBackground" />
-
+       
     </Page.Resources>
+   
     <Grid>
         <RelativePanel FocusVisualPrimaryBrush="#FF333337" Background="#FF333337">
-           
 
-            <Border x:Name="MarkBorder" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="Progress" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Background="#FF333337" Margin="0,0,0,0">
-                <TextBox 
-                AcceptsReturn="True" 
-                RelativePanel.AlignLeftWithPanel="True" 
-                RelativePanel.AlignRightWithPanel="True" 
-                RelativePanel.AlignTopWithPanel="True"
-                RelativePanel.AlignBottomWithPanel="True"
-                    TextChanged="MarkEditor_TextChanged"
-                    SelectionChanged="MarkEditor_SelectionChanged"
-                    IsRightTapEnabled="True"
-                GotFocus="MarkEditor_GotFocus"
-                x:Name="MarkEditor"
-                Text=""
-                    IsTextPredictionEnabled="False"
-                    IsSpellCheckEnabled="False"
-                    
-                RequestedTheme="Light"  Background="White" FocusVisualSecondaryBrush="white" SelectionHighlightColorWhenNotFocused="White" BorderBrush="{x:Null}" Margin="0,9,0,0" />
-            </Border>
+
             <TextBlock x:Name="FileHeader" RelativePanel.AlignTopWithPanel="True" HorizontalAlignment="Left" Margin="50,9,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18"/>
-            <TextBox x:Name="CursorLocationBox" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="0,6,5,0" Background="{x:Null}" BorderBrush="{x:Null}" IsHitTestVisible="False" FocusVisualPrimaryBrush="{x:Null}"/>
-            <local1:ResponsiveButtonPanel x:Name="ToolbarDockMD" MoreButtonStyle="{StaticResource ResponsiveButtonPanelMoreButtonStyle}" RelativePanel.AlignLeftWithPanel="True" MaxHeight="100" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="FileHeader" Margin="0,10,0,0" Background="#FF1F1F1F">
+            <TextBlock x:Name="CursorLocationBox" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="0,6,5,0" IsHitTestVisible="False" FocusVisualPrimaryBrush="{x:Null}"/>
+            <local1:ResponsiveButtonPanel x:Name="ToolbarDockMD" MoreButtonStyle="{StaticResource ResponsiveButtonPanelMoreButtonStyle}" RelativePanel.AlignLeftWithPanel="True" MaxHeight="100" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="FileHeader" Margin="0,10,0,0" Background="#FF1F1F1F" Height="56">
                 <local1:ResponsiveButtonPanel.Elements>
                     <local1:ResponsiveButtonPanelButton Tag="CutTag" Text="Cut" Glyph="&#xE8C6;" Click="ResponsiveButtonPanelButton_Click" />
                     <local1:ResponsiveButtonPanelButton Tag="CopyTag" Text="Copy" Glyph="&#xE8C8;" Click="ResponsiveButtonPanelButton_Click" />
@@ -74,7 +57,31 @@
                 </local1:ResponsiveButtonPanel.Elements>
             </local1:ResponsiveButtonPanel>
             
-            <ProgressBar x:Name="Progress" RelativePanel.AlignLeftWithPanel="True" Visibility="Visible" IsEnabled="False" RelativePanel.AlignRightWithPanel="True"  Margin="0,86,0,0" Foreground="{ThemeResource SystemAccentColor}" Background="#FF1F1F1F" BorderBrush="#FF1F1F1F" FocusVisualPrimaryBrush="#FF1F1F1F" FocusVisualSecondaryBrush="#FF1F1F1F"/>
+            <ProgressBar x:Name="Progress" RelativePanel.AlignLeftWithPanel="True" Visibility="Visible" IsEnabled="False" RelativePanel.AlignRightWithPanel="True"  Margin="0,41,0,-2" Foreground="{ThemeResource SystemAccentColor}" Background="#FF1F1F1F" BorderBrush="#FF1F1F1F" FocusVisualPrimaryBrush="#FF1F1F1F" FocusVisualSecondaryBrush="#FF1F1F1F"/>
+
+
+
+            <TextBox
+                     AcceptsReturn="True" 
+                RelativePanel.AlignLeftWithPanel="True" 
+                RelativePanel.AlignRightWithPanel="True" 
+                RelativePanel.Below="ToolbarDockMD"
+                RelativePanel.AlignBottomWithPanel="True"
+                    TextChanged="MarkEditor_TextChanged"
+                    SelectionChanged="MarkEditor_SelectionChanged"
+                    IsRightTapEnabled="True"
+                GotFocus="MarkEditor_GotFocus"
+                x:Name="MarkEditor"
+                Text=""
+                RequestedTheme="Light"
+                    IsTextPredictionEnabled="False"
+                    IsSpellCheckEnabled="False"
+                FocusVisualSecondaryBrush="{x:Null}" 
+                SelectionHighlightColorWhenNotFocused="{x:Null}" 
+                BorderBrush="{x:Null}" 
+                FocusVisualPrimaryBrush="{x:Null}" Background="White" Foreground="{x:Null}" SelectionHighlightColor="{x:Null}"
+                >
+            </TextBox>
         </RelativePanel>
 
         

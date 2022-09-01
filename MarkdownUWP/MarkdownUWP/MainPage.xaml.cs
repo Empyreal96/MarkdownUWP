@@ -47,11 +47,11 @@ namespace MarkdownUWP
         /// 
         /// MUST CHANGE THESE BEFORE EACH PUBLIC GITHUB RELEASE
         /// </summary>
-        public static string CurrentBuildVersion = "1.0.3";
-        public static string PreviousBuildVersion = "1.0.2";
-        public static string NextBuildVersion = "1.0.4";
-        public static string UploadedFileName = "MarkdownUWP_1.0.4.0_Debug_Test.zip";
-        public static string AppxUpdateName = "MarkdownUWP_1.0.4.0_x86_x64_arm_Debug.appxbundle";
+        public static string CurrentBuildVersion = "1.0.4";
+        public static string PreviousBuildVersion = "1.0.3";
+        public static string NextBuildVersion = "1.0.5";
+        public static string UploadedFileName = "MarkdownUWP_1.0.5.0_Debug_Test.zip";
+        public static string AppxUpdateName = "MarkdownUWP_1.0.5.0_x86_x64_arm_Debug.appxbundle";
         
         public StorageFolder folder { get; set; }
         public StorageFile file { get; set; }
@@ -605,6 +605,29 @@ async () =>
                 saveFolder.FileTypeFilter.Add(".c");
                 saveFolder.FileTypeFilter.Add(".h");
                 saveFolder.FileTypeFilter.Add(".txt");
+                saveFolder.FileTypeFilter.Add(".cpp");
+                saveFolder.FileTypeFilter.Add(".xml");
+                saveFolder.FileTypeFilter.Add(".xaml");
+                saveFolder.FileTypeFilter.Add(".cvs");
+                saveFolder.FileTypeFilter.Add(".ini");
+                saveFolder.FileTypeFilter.Add(".bat");
+                saveFolder.FileTypeFilter.Add(".inf");
+                saveFolder.FileTypeFilter.Add(".pl");
+                saveFolder.FileTypeFilter.Add(".csproj");
+                saveFolder.FileTypeFilter.Add(".patch");
+                saveFolder.FileTypeFilter.Add(".diff");
+                saveFolder.FileTypeFilter.Add(".asm");
+                saveFolder.FileTypeFilter.Add(".html");
+                saveFolder.FileTypeFilter.Add(".cmake");
+                saveFolder.FileTypeFilter.Add(".shtml");
+                saveFolder.FileTypeFilter.Add(".htm");
+                saveFolder.FileTypeFilter.Add(".ps1");
+                saveFolder.FileTypeFilter.Add(".nfo");
+                saveFolder.FileTypeFilter.Add(".lua");
+                saveFolder.FileTypeFilter.Add(".json");
+                saveFolder.FileTypeFilter.Add(".js");
+                saveFolder.FileTypeFilter.Add(".reg");
+
                 folder = await saveFolder.PickSingleFolderAsync();
                 if (folder == null)
                 {
@@ -958,6 +981,7 @@ async () =>
 
                     ProgressBarDownload.Visibility = Visibility.Collapsed;
                     DLUpdate.Visibility = Visibility.Collapsed;
+                    DlGrid.Visibility = Visibility.Collapsed;
                 }
                 //Test Function
                 if (latestRelease.TagName == PreviousBuildVersion)
@@ -965,6 +989,7 @@ async () =>
                     UpdateOut.Text = "You are on an unreleased build";
                     ProgressBarDownload.Visibility = Visibility.Collapsed;
                     DLUpdate.Visibility = Visibility.Collapsed;
+                    DlGrid.Visibility = Visibility.Collapsed;
                 }
 
                 if (latestRelease.TagName == NextBuildVersion)
@@ -1173,6 +1198,8 @@ async () =>
             public int Column { get; set; } = 1;
 
         }
+
+       
     }
 
 
