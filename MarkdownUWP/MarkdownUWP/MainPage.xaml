@@ -157,7 +157,7 @@
 
 <!-- About -->
         <RelativePanel x:Name="AboutPane" Margin="20,20,20,20" BorderBrush="Black" BorderThickness="1,1,1,1" Background="#FF1E1E1E">
-            <TextBlock x:Name="AboutHeader" Text="Minidump Editor UWP" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="0,16,0,0" FontSize="18"/>
+            <TextBlock x:Name="AboutHeader" Text="Markdown Editor UWP" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="0,16,0,0" FontSize="18"/>
             <TextBlock x:Name="AboutText" RelativePanel.Below="AboutHeader" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="5,5,5,5" TextWrapping="Wrap" FontSize="16"/>
             <Grid x:Name="DlGrid"
                   RelativePanel.AlignBottomWithPanel="True"
