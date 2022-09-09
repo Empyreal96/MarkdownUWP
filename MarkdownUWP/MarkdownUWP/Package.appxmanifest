@@ -7,14 +7,14 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="MarkdownUWP"
+    Name="Universal-Markup-Editor"
     Publisher="CN=Empyreal96"
-    Version="1.0.4.0" />
+    Version="1.0.6.0" />
 
   <mp:PhoneIdentity PhoneProductId="6269aaa7-78b7-4784-ba33-8a052dbdc5e2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>MarkdownUWP</DisplayName>
+    <DisplayName>Universal Markup Editor</DisplayName>
     <PublisherDisplayName>Empyreal96</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -32,14 +32,297 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="MarkdownUWP.App">
       <uap:VisualElements
-        DisplayName="MarkdownUWP"
+        DisplayName="Universal Markup Editor"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="MarkdownUWP"
+        Description="Universal Markup Editor"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="MarkdownUWP"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="Universal Markup Editor">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square310x310Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="markdown">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/markdown">.md</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Markdown File (.md)</uap:DisplayName>
+            <uap:InfoTip>Markdown Rich Text File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="markdown_text">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/markdown">.markdown</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Markdown File (.markdown)</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>Markdown Rick Text File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="text">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.txt</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Text File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>Standard Text File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="csharp_source">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain.cs">.cs</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>CSharp Source File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>CSharp Source File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="c_source">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain.c">.c</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>C Source File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>C Source File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="c_header">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain.c">.h</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>C Header File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>C Header File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="cpp_source">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain.cpp">.cpp</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>C++ Source File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>C++ Source File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="xml">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/xml">.xml</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>XML File</uap:DisplayName>
+            <uap:InfoTip>Extensible Markup Language File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="csv_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/csv">.csv</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>CSV File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>Comma-Seperated Values File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="ini_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.ini</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>INI Configuration File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>INI Configuration File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="pl_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.pl</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Pearl Script</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>Pearl Script</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="csproj_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.csproj</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:EditFlags OpenIsSafe="true"/>
+            <uap:DisplayName>CSharp Project File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>CSharp Project File</uap:InfoTip>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="patch_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.patch</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>PATCH file</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>PATCH file</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="diff_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.diff</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Difference File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>Difference File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="asm_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.asm</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Assembly Language Source File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>Assembly Language Source File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="html_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/html">.html</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>HTML Webpage File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>HTML Webpage File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="cmake_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.cmake</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>CMAKE Source File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>CMAKE Source File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="shtml_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/html">.shtml</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>SHTML Webpage File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>SHTML Webpage File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="htm_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/html">.htm</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>HTM Webpage File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>HTM Webpage File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="nfo_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/x-nfo">.nfo</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:EditFlags OpenIsSafe="true"/>
+            <uap:DisplayName>Information File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>Information File</uap:InfoTip>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="lua_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.lua</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>LUA Source File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>LUA Source File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="json_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="application/json">.json</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>JavaScript Object Notation File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>JavaScript Object Notation File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="js_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/javascript">.js</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>JavaScript File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>JavaScript File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="cfg_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.cfg</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Configuration File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>Configuration File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="log_file">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/x-log">.log</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Logging File</uap:DisplayName>
+            <uap:Logo>Assets\MarkdownUWPIcon.png</uap:Logo>
+            <uap:InfoTip>Logging File</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
 

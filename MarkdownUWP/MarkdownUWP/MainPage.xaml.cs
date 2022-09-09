@@ -30,6 +30,7 @@ using SharpCompress.Readers;
 using SharpCompress.Common;
 using Octokit;
 using Windows.UI.Core;
+using Windows.ApplicationModel.Activation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -47,12 +48,12 @@ namespace MarkdownUWP
         /// 
         /// MUST CHANGE THESE BEFORE EACH PUBLIC GITHUB RELEASE
         /// </summary>
-        public static string CurrentBuildVersion = "1.0.4";
-        public static string PreviousBuildVersion = "1.0.3";
-        public static string NextBuildVersion = "1.0.5";
-        public static string UploadedFileName = "MarkdownUWP_1.0.5.0_Debug_Test.zip";
-        public static string AppxUpdateName = "MarkdownUWP_1.0.5.0_x86_x64_arm_Debug.appxbundle";
-        
+        public static string CurrentBuildVersion = "1.0.6";
+        public static string PreviousBuildVersion = "1.0.5";
+        public static string NextBuildVersion = "1.0.7";
+        public static string UploadedFileName = "Universal Markup Editor_1.0.7.0_Test.zip";
+        public static string AppxUpdateName = "Universal Markup Editor_1.0.7.0_x86_x64_arm.appxbundle";
+
         public StorageFolder folder { get; set; }
         public StorageFile file { get; set; }
         public bool isLatestBuild { get; set; }
@@ -61,17 +62,19 @@ namespace MarkdownUWP
         CancellationTokenSource cancellationToken;
 
         BackgroundDownloader backgroundDownloader = new BackgroundDownloader();
-
-
-
-
+        ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
+        string[] fontList = Microsoft.Graphics.Canvas.Text.CanvasTextFormat.GetSystemFontFamilies();
+        double fontSize { get; set; }
+        ResourceDictionary EditorRes { get; set; }
+        SolidColorBrush colorNew = new SolidColorBrush(new Windows.UI.Color() { A = 255, R = 45, B = 45, G = 44 });
+        Color uiColor = new Windows.UI.Color() { A = 255, R = 45, B = 45, G = 44 };
         public static WebView Preview { get; set; }
         public static bool FileNameAccepted { get; set; }
         public static string SavedFileName = "Untitled.md";
         public static RelativePanel ToolbarControl { get; set; }
         //public MarkdownInit ViewModel => DataContext as MarkdownInit;
         public static string currentText { get; set; }
-
+        ApplicationTheme currentTheme = Windows.UI.Xaml.Application.Current.RequestedTheme;
         public static StorageFile saveFile { get; set; }
         public static bool IsFileLoaded { get; set; }
         public static bool IsFileModified { get; set; }
@@ -83,15 +86,50 @@ namespace MarkdownUWP
         public MainPage()
         {
             this.InitializeComponent();
-            // MarkEditor.Focus(FocusState.Programmatic);
+            EditorRes = MarkEditor.Resources;
+
+            // Detech System theme and apply the UI Colour changes
+            if (currentTheme == ApplicationTheme.Dark)
+            {
+                MainPanel.Background = colorNew;
+                Progress.Background = colorNew;
+                EditorBackground.Background = colorNew;
+                PreviewPane.Background = colorNew;
+                AboutPane.Background = colorNew;
+                SyntaxPane.Background = colorNew;
+                SettingsPane.Background = colorNew;
+                MarkEditor.RequestedTheme = ElementTheme.Dark;
+                (EditorRes["TextControlForegroundFocused"] as SolidColorBrush).Color = Colors.White;
+                EditorBackCombo.PlaceholderText = "Dark";
+            }
+            else
+            {
+                EditorBackground.Background = new SolidColorBrush(Colors.White);
+                EditorBackCombo.PlaceholderText = "Light";
+
+            }
+            // first run check/ app settings load
+            IsFirstRunComplete();
+
+            // Configure visibility of the pop up windows, add fonts to lists and initial bool settings
+            fontSize = MarkEditor.FontSize;
+            FontSizeCombo.PlaceholderText = fontSize.ToString();
+            FontComboBox.PlaceholderText = MarkEditor.FontFamily.Source;
             PreviewPane.Visibility = Visibility.Collapsed;
             AboutPane.Visibility = Visibility.Collapsed;
             SyntaxPane.Visibility = Visibility.Collapsed;
             InstallUpdateBtn.Visibility = Visibility.Collapsed;
+            SettingsPane.Visibility = Visibility.Collapsed;
             saveFile = null;
             IsFileModified = true;
             IsSessionSaved = false;
             SaveFileExtension = ".md";
+            foreach (var item in fontList)
+            {
+                FontComboBox.Items.Add(item);
+            }
+
+            // About text for popup window
             AboutText.Text = "This app makes use of these libraries:\n" +
                 "- Markdown.Core Nuget by tobiasschulz\n" +
                 "- Microsoft.UI.Xaml by Microsoft\n" +
@@ -99,6 +137,8 @@ namespace MarkdownUWP
                 "- Octokit Nuget by Github\n" +
                 "- SharpCompressUWP fork by BAstifan\n\n" +
                 "(2022 github.com/empyreal96)";
+
+            // Markown Syntax help page text
             #region SyntaxHelp
             HeadersInfo.Text =
                "Headers are the titles for Pages and sections, 1 is largest 6 is smallest\n" +
@@ -186,6 +226,7 @@ namespace MarkdownUWP
             #endregion
 
 
+            // Check if Internet is connected and check for update
             bool isNetworkConnected = NetworkInterface.GetIsNetworkAvailable();
             if (isNetworkConnected == true)
             {
@@ -199,7 +240,7 @@ namespace MarkdownUWP
                 DLUpdate.Visibility = Visibility.Collapsed;
             }
 
-
+            // Check for existing file name, if none set as Untitled
             if (SavedFileName != null)
             {
 
@@ -211,20 +252,93 @@ namespace MarkdownUWP
                 FileHeader.Text = "Untitled.md";
             }
 
+            // Enable SpellCheckToggle.Toggled here to avoid the event triggering when being see in Loading application settings
+            SpellCheckTog.Toggled += SpellCheckTog_Toggled;
+            
+            // If a file was used to activate the app, check if a file exists from that activation and load that file
+            if (OpenFileHelper.activatedFile != null)
+            {
+                OpenFile();
+            }
+
+        }
+
+        public async void IsFirstRunComplete()
+        {
+            try
+            {
+                IPropertySet roamingProperties = ApplicationData.Current.RoamingSettings.Values;
+
+              if (!roamingProperties.ContainsKey("FirstRunDone"))
+                {
+                    //defaults
+                    if (currentTheme == ApplicationTheme.Light)
+                    {
+                        LocalSettings.Values["DefaultTheme"] = "Light";
+
+                    }
+                    else
+                    {
+                        LocalSettings.Values["DefaultTheme"] = "Dark";
+                    }
+                    LocalSettings.Values["DefaultFont"] = "Segoe UI";
+                    LocalSettings.Values["DefaultFontSize"] = 15;
+
+                    // settings
+
+                    if (currentTheme == ApplicationTheme.Light)
+                    {
+                        LocalSettings.Values["UserTheme"] = "Light";
+
+                    }
+                    else
+                    {
+                        LocalSettings.Values["UserTheme"] = "Dark";
+                    }
+                    LocalSettings.Values["UserFont"] = "Segoe UI";
+                    LocalSettings.Values["UserFontSize"] = (double)15;
+                    LocalSettings.Values["UserSpellCheck"] = "false";
+                    roamingProperties["FirstRunDone"] = bool.TrueString;
+
+                    var WelcomePopup = new MessageDialog(
+                        "Welcome to Universal Markup Editor!\n\n" +
+                        "This App lets you Edit, Create, Save and Preview Markdown files in addition to a variety of general text based files");
+                    WelcomePopup.Commands.Add(new UICommand("Close"));
+                    await WelcomePopup.ShowAsync();
+                }
+                else
+                {
+                    AppSettingsLoad();
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                ThrowError(ex);
+            }
         }
 
         private async void MainNav_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
         {
             try
             {
+                // Keep current editor text when switching to a window
                 currentText = MarkEditor.Text;
+
+                // Filename set
                 if (SavedFileName != null)
                 {
                     FileHeader.Text = SavedFileName;
                 }
 
+                // Navigation Menu items
                 switch (args.InvokedItemContainer.Tag.ToString())
                 {
+                    case "SettingsTag":
+                        MainNav.IsPaneOpen = false;
+                        SettingsPane.Visibility = Visibility.Visible;
+                        break;
+
                     case "SaveFileTag":
                         SaveFile();
                         break;
@@ -236,13 +350,30 @@ namespace MarkdownUWP
                         break;
                     case "PreviewView":
                         PreviewPane.Visibility = Visibility.Visible;
-                        String data = "<html><head>"
-                       + "<style type=\"text/css\">body{color: #fff; background-color: #FF333337;}"
-                       + "</style></head>"
-                       + "<body>"
-                       + "<span style=\"font-family: 'Segoe UI'\">" + await ConvertAsync(currentText) + "</span>"
-                       + "</body></html>";
-                        PreviewWebview.NavigateToString(data);
+                        ApplicationTheme currentTheme = Windows.UI.Xaml.Application.Current.RequestedTheme;
+                        // Markdown text preview requires some html to be passed with the data when loading the WebView element
+                        // Change colours depending on System theme
+                        if (currentTheme == ApplicationTheme.Dark)
+                        {
+                            String data = "<html><head>"
+                           + "<style type=\"text/css\">body{color: #fff; background-color: #000;}"
+                           + "</style></head>"
+                           + "<body>"
+                           + "<span style=\"font-family: 'Segoe UI'\">" + await ConvertAsync(currentText) + "</span>"
+                           + "</body></html>";
+                            PreviewWebview.NavigateToString(data);
+                        }
+                        else
+                        {
+
+                            String data = "<html><head>"
+                           + "<style type=\"text/css\">body{color: #000; background-color: #fff;}"
+                           + "</style></head>"
+                           + "<body>"
+                           + "<span style=\"font-family: 'Segoe UI'\">" + await ConvertAsync(currentText) + "</span>"
+                           + "</body></html>";
+                            PreviewWebview.NavigateToString(data);
+                        }
                         break;
                     case "SyntaxHelp":
                         SyntaxPane.Visibility = Visibility.Visible;
@@ -282,14 +413,7 @@ async () =>
 
 
 
-
-
-
-
-
-
-
-
+       
 
 
 
@@ -302,8 +426,42 @@ async () =>
             loadFile.FileTypeFilter.Add(".c");
             loadFile.FileTypeFilter.Add(".h");
             loadFile.FileTypeFilter.Add(".txt");
+            loadFile.FileTypeFilter.Add(".cpp");
+            loadFile.FileTypeFilter.Add(".xml");
+            loadFile.FileTypeFilter.Add(".xaml");
+            loadFile.FileTypeFilter.Add(".csv");
+            loadFile.FileTypeFilter.Add(".ini");
+            loadFile.FileTypeFilter.Add(".bat");
+            loadFile.FileTypeFilter.Add(".inf");
+            loadFile.FileTypeFilter.Add(".pl");
+            loadFile.FileTypeFilter.Add(".csproj");
+            loadFile.FileTypeFilter.Add(".patch");
+            loadFile.FileTypeFilter.Add(".diff");
+            loadFile.FileTypeFilter.Add(".asm");
+            loadFile.FileTypeFilter.Add(".html");
+            loadFile.FileTypeFilter.Add(".cmake");
+            loadFile.FileTypeFilter.Add(".shtml");
+            loadFile.FileTypeFilter.Add(".htm");
+            loadFile.FileTypeFilter.Add(".ps1");
+            loadFile.FileTypeFilter.Add(".nfo");
+            loadFile.FileTypeFilter.Add(".lua");
+            loadFile.FileTypeFilter.Add(".json");
+            loadFile.FileTypeFilter.Add(".js");
+            loadFile.FileTypeFilter.Add(".reg");
+            loadFile.FileTypeFilter.Add(".cfg");
+            loadFile.FileTypeFilter.Add(".log");
             loadFile.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-            loadedFile = await loadFile.PickSingleFileAsync();
+            // Check if File was used to lauch the app, if so set that file as the Selected file
+            if (OpenFileHelper.activatedFile == null)
+            {
+                loadedFile = await loadFile.PickSingleFileAsync();
+
+            } else
+            {
+                loadedFile = OpenFileHelper.activatedFile;
+            }
+
+
             if (loadedFile == null)
             {
                 IsFileModified = false;
@@ -311,14 +469,18 @@ async () =>
                 IsSessionSaved = false;
                 return;
             }
+            // set file name
             FileHeader.Text = loadedFile.Name;
             SavedFileName = loadedFile.Name;
+
+            // read text
             string parsedText = await FileIO.ReadTextAsync(loadedFile);
             if (parsedText != null)
             {
                 MarkEditor.Text = parsedText;
                 currentText = parsedText;
                 SaveFileExtension = Path.GetExtension(SavedFileName);
+                // Check if file is a Markdown file, if not then hide Markdown specific toolbar with the basic toolbar
                 if (SaveFileExtension != ".md" && SaveFileExtension != ".markdown")
                 {
                     ToolbarDockMD.Visibility = Visibility.Collapsed;
@@ -355,6 +517,8 @@ async () =>
             {
                 if (loadedFile != null)
                 {
+
+                    // use a stream to save the currently loaded file
                     Debug.WriteLine($"Filename: {SavedFileName}");
                     var streamclearer = await loadedFile.OpenStreamForWriteAsync().ConfigureAwait(false);
                     streamclearer.SetLength(0);
@@ -374,6 +538,7 @@ async () =>
                     await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                             async () =>
                             {
+                                // Update file name if needed, and adjust the loaded toolbar
                                 FileHeader.Text = loadedFile.Name;
 
                                 var ThrownSuccess = new MessageDialog($"File saved to: {loadedFile.Path}");
@@ -443,7 +608,7 @@ async () =>
                     fileTypeBox.Items.Add(".cpp");
                     fileTypeBox.Items.Add(".xml");
                     fileTypeBox.Items.Add(".xaml");
-                    fileTypeBox.Items.Add(".cvs");
+                    fileTypeBox.Items.Add(".csv");
                     fileTypeBox.Items.Add(".ini");
                     fileTypeBox.Items.Add(".bat");
                     fileTypeBox.Items.Add(".inf");
@@ -462,9 +627,12 @@ async () =>
                     fileTypeBox.Items.Add(".json");
                     fileTypeBox.Items.Add(".js");
                     fileTypeBox.Items.Add(".reg");
+                    fileTypeBox.Items.Add(".log");
+                    fileTypeBox.Items.Add(".cfg");
                     fileTypeBox.Items.Add(".*");
                     fileTypeBox.SelectedIndex = 0;
                     fileTypeBox.Height = 40;
+                    fileTypeBox.Width = 250;
                     fileTypeBox.HorizontalAlignment = HorizontalAlignment.Stretch;
                     fileTypeBox.SelectionChanged += FileTypeBox_SelectionChanged;
 
@@ -482,6 +650,7 @@ async () =>
                     dialog.PrimaryButtonText = "Confirm";
                     dialog.SecondaryButtonText = "Cancel";
                     dialog.SecondaryButtonClick += Dialog_SecondaryButtonClick;
+                    // Save as a new file
 
                     if (await dialog.ShowAsync() == ContentDialogResult.Primary)
                     {
@@ -520,7 +689,7 @@ async () =>
                             saveFolder.FileTypeFilter.Add(".cpp");
                             saveFolder.FileTypeFilter.Add(".xml");
                             saveFolder.FileTypeFilter.Add(".xaml");
-                            saveFolder.FileTypeFilter.Add(".cvs");
+                            saveFolder.FileTypeFilter.Add(".csv");
                             saveFolder.FileTypeFilter.Add(".ini");
                             saveFolder.FileTypeFilter.Add(".bat");
                             saveFolder.FileTypeFilter.Add(".inf");
@@ -539,6 +708,8 @@ async () =>
                             saveFolder.FileTypeFilter.Add(".json");
                             saveFolder.FileTypeFilter.Add(".js");
                             saveFolder.FileTypeFilter.Add(".reg");
+                            saveFolder.FileTypeFilter.Add(".cfg");
+                            saveFolder.FileTypeFilter.Add(".log");
                             folder = await saveFolder.PickSingleFolderAsync();
                             if (folder == null)
                             {
@@ -605,10 +776,10 @@ async () =>
             fileTypeBox.Items.Add(".txt");
             fileTypeBox.Items.Add(".cpp");
             fileTypeBox.Items.Add(".xml");
-            fileTypeBox.Items.Add(".xaml");
-            fileTypeBox.Items.Add(".cvs");
+            fileTypeBox.Items.Add(".xaml"); //
+            fileTypeBox.Items.Add(".csv");
             fileTypeBox.Items.Add(".ini");
-            fileTypeBox.Items.Add(".bat");
+            fileTypeBox.Items.Add(".bat"); // 
             fileTypeBox.Items.Add(".inf");
             fileTypeBox.Items.Add(".pl");
             fileTypeBox.Items.Add(".csproj");
@@ -625,9 +796,13 @@ async () =>
             fileTypeBox.Items.Add(".json");
             fileTypeBox.Items.Add(".js");
             fileTypeBox.Items.Add(".reg");
+            fileTypeBox.Items.Add(".log");
+            fileTypeBox.Items.Add(".cfg");
             fileTypeBox.Items.Add(".*");
             fileTypeBox.SelectedIndex = 0;
             fileTypeBox.Height = 40;
+            fileTypeBox.Width = 250;
+
             fileTypeBox.HorizontalAlignment = HorizontalAlignment.Stretch;
             fileTypeBox.SelectionChanged += FileTypeBox_SelectionChanged;
 
@@ -635,6 +810,7 @@ async () =>
             fileNameUser.PlaceholderText = "Enter a File Name";
             fileNameUser.Text = SavedFileName;
             fileNameUser.Height = 40;
+            fileNameUser.RequestedTheme = ElementTheme.Light;
             StackPanel stackPanel = new StackPanel();
             stackPanel.Children.Add(fileNameUser);
             stackPanel.Children.Add(fileTypeBox);
@@ -676,7 +852,7 @@ async () =>
                 saveFolder.FileTypeFilter.Add(".cpp");
                 saveFolder.FileTypeFilter.Add(".xml");
                 saveFolder.FileTypeFilter.Add(".xaml");
-                saveFolder.FileTypeFilter.Add(".cvs");
+                saveFolder.FileTypeFilter.Add(".csv");
                 saveFolder.FileTypeFilter.Add(".ini");
                 saveFolder.FileTypeFilter.Add(".bat");
                 saveFolder.FileTypeFilter.Add(".inf");
@@ -684,7 +860,7 @@ async () =>
                 saveFolder.FileTypeFilter.Add(".csproj");
                 saveFolder.FileTypeFilter.Add(".patch");
                 saveFolder.FileTypeFilter.Add(".diff");
-                saveFolder.FileTypeFilter.Add(".asm");
+                saveFolder.FileTypeFilter.Add(".asm"); //
                 saveFolder.FileTypeFilter.Add(".html");
                 saveFolder.FileTypeFilter.Add(".cmake");
                 saveFolder.FileTypeFilter.Add(".shtml");
@@ -695,7 +871,8 @@ async () =>
                 saveFolder.FileTypeFilter.Add(".json");
                 saveFolder.FileTypeFilter.Add(".js");
                 saveFolder.FileTypeFilter.Add(".reg");
-
+                saveFolder.FileTypeFilter.Add(".cfg");
+                saveFolder.FileTypeFilter.Add(".log");
                 folder = await saveFolder.PickSingleFolderAsync();
                 if (folder == null)
                 {
@@ -753,7 +930,7 @@ async () =>
         private void MarkEditor_GotFocus(object sender, RoutedEventArgs e)
         {
 
-            //MarkEditor.Background = new SolidColorBrush(Colors.DarkSlateGray);
+
 
         }
         //https://www.blakepell.com/blog/getting-the-cursor-row-and-column-position-in-a-uwp-textbox
@@ -828,6 +1005,11 @@ async () =>
             }
         }
 
+
+        /// <summary>
+        /// Copy selected string/text to the Windows Clipboard
+        /// </summary>
+        /// <param name="text"></param>
         public void Clipboard_CopyText(string text)
         {
             DataPackage dataPackage = new DataPackage();
@@ -837,6 +1019,11 @@ async () =>
             Clipboard.SetContent(dataPackage);
         }
 
+
+        /// <summary>
+        /// Copy the selected string/text to Windows Clipboard then remove the text from Editor
+        /// </summary>
+        /// <param name="text"></param>
         public void Clipboard_CutText(string text)
         {
             DataPackage dataPackage = new DataPackage();
@@ -847,6 +1034,10 @@ async () =>
             MarkEditor.SelectedText = "";
         }
 
+
+        /// <summary>
+        /// Paste data from Windows Clipboard to the Editor
+        /// </summary>
         public async void Clipboard_PasteText()
         {
             var dataPackageView = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
@@ -861,7 +1052,7 @@ async () =>
         private async void ResponsiveButtonPanelButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as ResponsiveButtonPanelButton;
-
+            // Manage button presses from the toolbar
             switch (button.Tag)
             {
                 case "CopyTag":
@@ -1009,9 +1200,6 @@ async () =>
 
             }
 
-            //MessageDialog dialog = new MessageDialog(button.Text + " clicked\n\nValue:" + test, "Information");
-
-            // await dialog.ShowAsync();
         }
 
         private void PreviewClose_Click(object sender, RoutedEventArgs e)
@@ -1065,7 +1253,6 @@ async () =>
                     var updateURL = latestRelease.Assets[0].BrowserDownloadUrl;
                     UpdateURL = $"https://github.com/Empyreal96/MarkdownUWP/releases/download/{latestRelease.TagName}/{UploadedFileName}";
                     Debug.WriteLine(updateURL);
-                    // string updateURL = $"https://github.com/Empyreal96/MarkdownUWP/releases/download/1.0.0/MarkdownUWP_1.0.0.0_Debug_Test.zip";
                     UpdateOut.Visibility = Visibility.Visible;
                     ProgressBarDownload.Visibility = Visibility.Visible;
                     DLUpdate.Visibility = Visibility.Visible;
@@ -1267,7 +1454,195 @@ async () =>
 
         }
 
-       
+        // Settings button
+        private void NavigationViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            SettingsPane.Visibility = Visibility.Visible;
+            MainNav.IsPaneOpen = false;
+
+
+        }
+
+        private void SettingsClose_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsPane.Visibility = Visibility.Collapsed;
+
+        }
+
+
+
+
+
+        private void DefaultSettings()
+        {
+
+        }
+
+
+        /// <summary>
+        /// Check the saved values and apply them
+        /// </summary>
+        private void AppSettingsLoad()
+        {
+            var UserTheme = LocalSettings.Values["UserTheme"].ToString();
+            if (UserTheme == "Dark")
+            {
+                EditorBackCombo.PlaceholderText = "Dark";
+                SwitchToDarkEditor();
+            }
+            else
+            {
+                EditorBackCombo.PlaceholderText = "Light";
+                SwitchToLightEditor();
+            }
+
+            var UserFont = LocalSettings.Values["UserFont"].ToString();
+            FontComboBox.PlaceholderText = UserFont;
+            MarkEditor.FontFamily = new FontFamily(UserFont);
+
+            double UserFontSize = (double)LocalSettings.Values["UserFontSize"];
+            MarkEditor.FontSize = UserFontSize;
+            FontSizeCombo.PlaceholderText = UserFontSize.ToString();
+
+            var UserSpellCheck = LocalSettings.Values["UserSpellCheck"].ToString();
+            if (UserSpellCheck == "true")
+            {
+                MarkEditor.IsSpellCheckEnabled = true;
+                SpellCheckTog.IsOn = true;
+            }
+            else
+            {
+                MarkEditor.IsSpellCheckEnabled = false;
+                SpellCheckTog.IsOn = false;
+            }
+        }
+
+        private void SpellCheckTog_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (SpellCheckTog.IsOn == true)
+            {
+                LocalSettings.Values["UserSpellCheck"] = "true";
+                MarkEditor.IsSpellCheckEnabled = true;
+
+            }
+            else
+            {
+                LocalSettings.Values["UserSpellCheck"] = "false";
+                MarkEditor.IsSpellCheckEnabled = false;
+            }
+        }
+
+        private void FontComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedFont = FontComboBox.SelectedItem.ToString();
+            var testIndex = FontComboBox.SelectedIndex;
+            Debug.WriteLine(selectedFont);
+            LocalSettings.Values["UserFont"] = selectedFont;
+            MarkEditor.FontFamily = new FontFamily(selectedFont);
+
+        }
+
+        private void FontSizeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var size = ((ComboBoxItem)FontSizeCombo.SelectedItem).Content.ToString();
+            Debug.WriteLine(size);
+            switch (size)
+            {
+                case "12":
+                    LocalSettings.Values["UserFontSize"] = (double)12;
+                    MarkEditor.FontSize = 12;
+                    break;
+                case "13":
+                    LocalSettings.Values["UserFontSize"] = (double)13;
+                    MarkEditor.FontSize = 13;
+                    break;
+                case "14":
+                    LocalSettings.Values["UserFontSize"] = (double)14;
+                    MarkEditor.FontSize = 14;
+                    break;
+                case "15":
+                    LocalSettings.Values["UserFontSize"] = (double)15;
+                    MarkEditor.FontSize = 15;
+                    break;
+                case "16":
+                    LocalSettings.Values["UserFontSize"] = (double)16;
+                    MarkEditor.FontSize = 16;
+                    break;
+                case "17":
+                    LocalSettings.Values["UserFontSize"] = (double)17;
+                    MarkEditor.FontSize = 17;
+                    break;
+                case "18":
+                    LocalSettings.Values["UserFontSize"] = (double)18;
+                    MarkEditor.FontSize = 18;
+                    break;
+                case "19":
+                    LocalSettings.Values["UserFontSize"] = (double)19;
+                    MarkEditor.FontSize = 19;
+                    break;
+                case "20":
+                    LocalSettings.Values["UserFontSize"] = (double)20;
+                    MarkEditor.FontSize = 20;
+                    break;
+            }
+        }
+
+        private void EditorBackCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Color transparentColor = new Windows.UI.Color() { A = 0, R = 45, B = 45, G = 44 };
+            var theme = ((ComboBoxItem)EditorBackCombo.SelectedItem).Content.ToString();
+            Debug.WriteLine(theme);
+            EditorRes = MarkEditor.Resources;
+            var NavigationRes = MainNav.Resources;
+            switch (theme)
+            {
+
+                case "Light":
+                    LocalSettings.Values["UserTheme"] = "Light";
+                    SwitchToLightEditor();
+                    break;
+                case "Dark":
+                    LocalSettings.Values["UserTheme"] = "Dark";
+                    SwitchToDarkEditor();
+                    break;
+            }
+        }
+
+        private void SwitchToLightEditor()
+        {
+            MarkEditor.RequestedTheme = ElementTheme.Light;
+            MarkEditor.Foreground = new SolidColorBrush(Colors.Black);
+            EditorBackground.Background = new SolidColorBrush(Colors.White);
+            (EditorRes["TextControlForegroundFocused"] as SolidColorBrush).Color = Colors.Black;
+        }
+
+        private void SwitchToDarkEditor()
+        {
+
+            if (currentTheme == ApplicationTheme.Light)
+            {
+                MarkEditor.RequestedTheme = ElementTheme.Light;
+                EditorBackground.Background = new SolidColorBrush(uiColor);
+                MarkEditor.Foreground = new SolidColorBrush(Colors.White);
+                (EditorRes["TextControlForegroundFocused"] as SolidColorBrush).Color = Colors.White;
+               
+            }
+            else
+            {
+                MarkEditor.RequestedTheme = ElementTheme.Dark;
+                EditorBackground.Background = new SolidColorBrush(uiColor);
+                MarkEditor.Foreground = new SolidColorBrush(Colors.White);
+                (EditorRes["TextControlForegroundFocused"] as SolidColorBrush).Color = Colors.White;
+
+            }
+        }
+
+
+        private void MarkEditor_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+
+        }
     }
 
 

@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -66,11 +67,53 @@ namespace MarkdownUWP
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
+
+
+
+
                     rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+        }
+
+        protected override void OnFileActivated(FileActivatedEventArgs args)
+        {
+            if (args.Files.Count != 0)
+            {
+                var file = args.Files[0];
+                if (file is StorageFile)
+                {
+                    OpenFileHelper.activatedFile = file as StorageFile;
+                }
+                
+            }
+            // The number of files received is args.Files.Count
+            // The name of the first file is args.Files[0].Name
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
+            {
+                // Create a Frame to act as the navigation context and navigate to the first page
+                rootFrame = new Frame();
+
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                
+
+                // Place the frame in the current Window
+                Window.Current.Content = rootFrame;
+            }
+            if (rootFrame.Content == null)
+            {
+                // When the navigation stack isn't restored navigate to the first page,
+                // configuring the new page by passing required information as a navigation
+                // parameter
+
+                rootFrame.Navigate(typeof(MainPage));
+            }
+            // Ensure the current window is active
+            Window.Current.Activate();
         }
 
         /// <summary>
