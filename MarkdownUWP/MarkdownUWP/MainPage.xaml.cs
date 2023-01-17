@@ -48,11 +48,11 @@ namespace MarkdownUWP
         /// 
         /// MUST CHANGE THESE BEFORE EACH PUBLIC GITHUB RELEASE
         /// </summary>
-        public static string CurrentBuildVersion = "1.0.6";
-        public static string PreviousBuildVersion = "1.0.5";
-        public static string NextBuildVersion = "1.0.7";
-        public static string UploadedFileName = "Universal Markup Editor_1.0.7.0_Test.zip";
-        public static string AppxUpdateName = "Universal Markup Editor_1.0.7.0_x86_x64_arm.appxbundle";
+        public static string CurrentBuildVersion = "1.0.7";
+        public static string PreviousBuildVersion = "1.0.6";
+        public static string NextBuildVersion = "1.0.8";
+        public static string UploadedFileName = "Universal Markup Editor_1.0.8.0_Test.zip";
+        public static string AppxUpdateName = "Universal Markup Editor_1.0.8.0_x86_x64_arm.appxbundle";
 
         public StorageFolder folder { get; set; }
         public StorageFile file { get; set; }

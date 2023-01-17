@@ -19,7 +19,7 @@
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <PackageCertificateKeyFile>C:\Users\Empyreal96\Documents\Empyreal_Key.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Universal Markup Editor_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
@@ -134,9 +134,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponsiveButtonPanel.cs" />
     <Compile Include="ResponsiveButtonPanelButton.xaml.cs" />
-    <Compile Include="Temp.xaml.cs">
-      <DependentUpon>Temp.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -210,10 +207,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Temp.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -237,12 +230,14 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Downloads\SharpCompressUWP\SharpCompressUWP-main\src\SharpCompress.csproj">
-      <Project>{8F9BB3EE-E365-4FE0-B5EE-FB45D7E7FE41}</Project>
+    <ProjectReference Include="..\SharpCompressUWP\SharpCompress.csproj">
+      <Project>{8f9bb3ee-e365-4fe0-b5ee-fb45d7e7fe41}</Project>
       <Name>SharpCompress</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Universal Markup Editor_TemporaryKey.pfx" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

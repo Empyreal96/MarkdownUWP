@@ -8,8 +8,8 @@
 
   <Identity
     Name="Universal-Markup-Editor"
-    Publisher="CN=Empyreal96"
-    Version="1.0.6.0" />
+    Publisher="CN=Empyreal"
+    Version="1.0.7.0" />
 
   <mp:PhoneIdentity PhoneProductId="6269aaa7-78b7-4784-ba33-8a052dbdc5e2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

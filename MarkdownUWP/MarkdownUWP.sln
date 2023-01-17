@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Universal Markup Editor", "MarkdownUWP\Universal Markup Editor.csproj", "{3E79B9F8-4D67-41E8-8483-4C68026231D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpCompress", "..\..\..\Downloads\SharpCompressUWP\SharpCompressUWP-main\src\SharpCompress.csproj", "{8F9BB3EE-E365-4FE0-B5EE-FB45D7E7FE41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpCompress", "SharpCompressUWP\SharpCompress.csproj", "{8F9BB3EE-E365-4FE0-B5EE-FB45D7E7FE41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,7 +45,7 @@ Global
 		{3E79B9F8-4D67-41E8-8483-4C68026231D1}.Release|x86.Deploy.0 = Release|x86
 		{8F9BB3EE-E365-4FE0-B5EE-FB45D7E7FE41}.Debug|ARM.ActiveCfg = Debug|ARM
 		{8F9BB3EE-E365-4FE0-B5EE-FB45D7E7FE41}.Debug|ARM.Build.0 = Debug|ARM
-		{8F9BB3EE-E365-4FE0-B5EE-FB45D7E7FE41}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{8F9BB3EE-E365-4FE0-B5EE-FB45D7E7FE41}.Debug|ARM64.ActiveCfg = Debug|x86
 		{8F9BB3EE-E365-4FE0-B5EE-FB45D7E7FE41}.Debug|x64.ActiveCfg = Debug|x64
 		{8F9BB3EE-E365-4FE0-B5EE-FB45D7E7FE41}.Debug|x64.Build.0 = Debug|x64
 		{8F9BB3EE-E365-4FE0-B5EE-FB45D7E7FE41}.Debug|x86.ActiveCfg = Debug|x86
